@@ -39,6 +39,7 @@ backstage.io/kubernetes-id: {{ .Values.applicationName }}
 
 {{- define "frontend.labels" -}}
 backstage.io/kubernetes-id: {{ .Values.applicationName }}
+app.openshift.io/runtime: nodejs
 helm.sh/chart: {{ include "frontend.chart" . }}
 {{ include "frontend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}

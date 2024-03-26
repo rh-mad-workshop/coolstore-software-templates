@@ -10,8 +10,9 @@ metadata:
     backstage.io/kubernetes-id: ${{values.component_id}}
     backstage.io/kubernetes-namespace: ${{values.namespace}}
     backstage.io/techdocs-ref: dir:.
+    backstage.io/source-location: url:https://${{values.host}}/${{values.group}}/${{values.component_id}}
     gitlab.com/project-slug: ${{values.group}}/${{values.component_id}}
-    janus-idp.io/tekton-enabled: 'true'
+    janus-idp.io/tekton:  ${{values.component_id}}
   tags:
     - frontend
     - workshop

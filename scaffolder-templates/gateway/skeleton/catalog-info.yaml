@@ -35,9 +35,6 @@ spec:
   system: workshop-system-${{values.namespace}}
   providesApis:
     - ${{values.component_id}}
-  consumesApis:
-    - catalog-app-${{values.user_id}}
-    - inventory-app-${{values.user_id}}
 ---
 apiVersion: backstage.io/v1alpha1
 kind: System

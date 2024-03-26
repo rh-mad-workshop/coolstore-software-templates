@@ -39,6 +39,7 @@ backstage.io/kubernetes-id: ${{values.component_id}}
 
 {{- define "java-backend.labels" -}}
 backstage.io/kubernetes-id: ${{values.component_id}}
+app.openshift.io/runtime: openjdk
 helm.sh/chart: {{ include "java-backend.chart" . }}
 {{ include "java-backend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}

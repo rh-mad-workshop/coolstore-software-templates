@@ -3,6 +3,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: {{ .Values.applicationName }}
+  labels:
+    {{- include "backstage.labels" . | nindent 4 }}
+    {{- include "frontend.labels" . | nindent 4 }}
 spec:
   port:
     targetPort: web

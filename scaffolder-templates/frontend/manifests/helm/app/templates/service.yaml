@@ -12,5 +12,6 @@ metadata:
   name: {{ .Values.applicationName }}
   labels:
     app: {{ .Values.applicationName }}
+    {{- include "backstage.labels" . | nindent 4 }}
   annotations:
     description: The web server's http port

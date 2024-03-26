@@ -39,6 +39,7 @@ backstage.io/kubernetes-id: ${{values.component_id}}
 
 {{- define "quarkus-backend.labels" -}}
 backstage.io/kubernetes-id: ${{values.component_id}}
+app.openshift.io/runtime: quarkus
 helm.sh/chart: {{ include "quarkus-backend.chart" . }}
 {{ include "quarkus-backend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
