@@ -13,4 +13,3 @@ spec:
     - scaffolder-templates/tomcat-vm/template.yaml
     - scaffolder-templates/windows-vm/template.yaml
     - scaffolder-templates/rhel9-vm-medium/template.yaml
-    - scaffolder-templates/rhel9-vm-large/template.yaml
