@@ -1,0 +1,12 @@
+kind: ServiceMeshMember
+apiVersion: maistra.io/v1
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.app.namespace}}
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  controlPlaneRef:
+    name: basic
+    namespace: control-plane-namespace

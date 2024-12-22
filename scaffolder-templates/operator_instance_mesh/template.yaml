@@ -1,0 +1,113 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: service-mesh-member
+  title: Service Mesh Member
+  description: Start working with Service Mesh by creating Service Mesh Member Instance on your project
+  tags:
+    - operator-instance
+    - service-mesh-member
+    - workshop
+spec:
+  owner: architecture-team
+  type: operator-instance
+  parameters:
+    - title: Provide information about the new component
+      required:
+        - cluster_id
+        - namespace
+      properties:
+        cluster_id:
+          title: Select environments
+          type: array
+          items:
+            type: string
+            enum:
+              - .apps.cluster-qa.qa.sandboxxxx.opentlc.com
+              - .apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com
+            enumNames:
+              - qa-cluster-infra
+              - dev-cluster-infra
+          uniqueItems: true
+          ui:widget: checkboxes
+        namespace: 
+          title: Namespace
+          type: string
+          description: Namespace
+          default: rhdhub-user1
+  steps:
+    - id: templateSource
+      name: Generating the source code component
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./source
+        values:
+          owner: ${{ user.entity.metadata.name }}
+          cluster_id: ${{parameters.cluster_id}}
+          namespace: ${{parameters.namespace}}
+          component_id: default
+          host: gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com
+          repoName: default
+          user_id: ${{ user.entity.metadata.name }}
+          destination: ${{ user.entity.metadata.name }}/default
+    - id: publishSource
+      name: Publishing to Source Code Repository
+      action: publish:gitlab
+      input:
+        sourcePath: ./source
+        description: ${{parameters.description}}
+        repoUrl: gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com?owner=${{ user.entity.metadata.name }}&repo=default
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public    
+    - id: registerSource
+      name: Registering the Source Code Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{steps.publishSource.output.repoContentsUrl}}
+        catalogInfoPath: /catalog-info.yaml
+    - id: templateGitops
+      name: Generating the deployment resources and artefacts
+      action: fetch:template
+      input:
+        url: ./manifests
+        copyWithoutTemplating: []
+        values:
+          component_id: default
+          description: ${{parameters.description}}
+          destination:  https://gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com/${{ user.entity.metadata.name }}/default-gitops.git
+          source_repository: https://gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com/${{ user.entity.metadata.name }}}/default.git
+          repository_name: default
+          git_host: gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com
+          cluster: ${{parameters.cluster_id}}
+          namespace: ${{parameters.namespace}}
+          user_id: ${{ user.entity.metadata.name }}
+        targetPath: ./tenant-gitops
+    - id: publishGitops
+      name: Publishing to Deployment Resource Repository
+      action: publish:gitlab
+      input:
+        repoUrl: gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com?owner=${{ user.entity.metadata.name }}&repo=default-gitops
+        title: gitops resources for ${{parameters.namespace}}-gitops
+        description: gitops resources for ${{parameters.namespace}}-gitops
+        sourcePath: ./tenant-gitops
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public
+    - id: createArgoResources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: default-gitops
+        argoInstance: main
+        namespace: janus-argocd
+        repoUrl: https://gitlab-gitlab.apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com/${{ user.entity.metadata.name }}/default-gitops.git
+        path: 'argocd/'
+  output:
+    links:
+      - title: Source Code Repository
+        url: ${{steps.publishSource.output.remoteUrl}}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: ${{steps.registerSource.output.entityRef}}

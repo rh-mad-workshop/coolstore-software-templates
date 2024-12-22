@@ -10,3 +10,9 @@ spec:
     - scaffolder-templates/spring-backend/template.yaml
     - scaffolder-templates/quarkus-backend/template.yaml
     - scaffolder-templates/gateway/template.yaml
+    - scaffolder-templates/ephemeral-cluster-medium/template.yaml
+    - scaffolder-templates/operator_instance_jaeger/template.yaml 
+    - scaffolder-templates/namespace-medium/template.yaml 
+    - scaffolder-templates/operator_instance_mongodb/template.yaml     
+    - scaffolder-templates/operator_instance_mesh/template.yaml 
+    - scaffolder-templates/rhel9-vm-medium/template.yaml  

@@ -1,0 +1,40 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{values.component_id}}
+  {%- if values.description %}
+  description: ${{values.description}}
+  {%- endif %}
+  annotations:
+    argocd/app-name: ${{values.component_id}}
+    backstage.io/kubernetes-id: ${{values.component_id}}
+    backstage.io/kubernetes-namespace: ${{values.namespace}}
+    janus-idp.io/tekton: ${{values.component_id}}
+    backstage.io/techdocs-ref: url:https://${{values.host}}/${{values.destination}}
+    backstage.io/source-location: url:https://${{values.host}}/${{values.destination}}
+    gitlab.com/project-slug: ${{values.destination}}
+  tags:
+    - operator-instance
+    - service-mesh-member
+    - workshop
+  links:
+    - url: https://console-openshift-console${{values.cluster_id}}/k8s/ns/${{values.namespace}}/clusterserviceversions/mongodb-atlas-kubernetes.v2.5.0/atlas.mongodb.com~v1~AtlasDeployment/${{values.component_id}}
+      title: MongoDB Instance Overview
+      icon: web
+spec:
+  type: operator-instance
+  lifecycle: development
+  owner: ${{values.owner | dump}}
+  system: workshop-system-${{values.component_id}}
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-${{values.component_id}}
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+spec:
+  owner: ${{values.owner | dump}}

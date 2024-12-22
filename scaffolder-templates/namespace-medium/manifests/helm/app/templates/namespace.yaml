@@ -1,0 +1,12 @@
+kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    {{- include "namespace.labels" . | nindent 4 }}
+    {{- include "backstage.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  finalizers:
+    - kubernetes

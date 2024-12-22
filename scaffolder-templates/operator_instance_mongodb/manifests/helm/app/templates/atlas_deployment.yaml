@@ -1,0 +1,17 @@
+kind: AtlasDeployment
+apiVersion: atlas.mongodb.com/v1
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.app.namespace}}
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  projectRef:
+    name: {{ .Values.app.name }}
+  deploymentSpec:
+    name: {{ .Values.app.name }}
+    providerSettings:
+      instanceSizeName: M0
+      providerName: AWS
+      regionName: US_EAST_1
