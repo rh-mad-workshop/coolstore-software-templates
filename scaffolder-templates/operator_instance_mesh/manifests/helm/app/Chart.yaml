@@ -1,6 +1,6 @@
 apiVersion: v2
-name: project-medium
-description: A Helm to create a configuration of Service Mesh
+name: instance-mesh
+description: A Helm to create an configuration of Service Mesh
 
 # A chart can be either an 'application' or a 'library' chart.
 #

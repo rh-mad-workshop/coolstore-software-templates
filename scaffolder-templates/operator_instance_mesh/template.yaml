@@ -23,7 +23,7 @@ spec:
           items:
             type: string
             enum:
-              - .apps.cluster-qa.qa.sandboxxxx.opentlc.com
+              - .apps.cluster-qa.qa.sandboxxx.opentlc.com
               - .apps.cluster-aaaa.aaaa.sandboxxxxx.opentlc.com
             enumNames:
               - qa-cluster-infra
