@@ -1,5 +1,5 @@
 apiVersion: v2
-name: project-medium
+name: instance-jaeger
 description: A Helm to create an instance of Jaeger
 
 # A chart can be either an 'application' or a 'library' chart.
