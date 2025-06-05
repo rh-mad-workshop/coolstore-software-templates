@@ -1,0 +1,45 @@
+apiVersion: datasciencepipelinesapplications.opendatahub.io/v1
+kind: DataSciencePipelinesApplication
+metadata:
+  name: ds-pipeline
+  namespace: {{ .Values.app.namespace }}
+labels:
+  {{- include "ai.labels" . | nindent 4 }}
+  {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  apiServer:
+    artifactSignedURLExpirySeconds: 60
+    caBundleFileMountPath: ""
+    caBundleFileName: ""
+    deploy: true
+    enableOauth: true
+    enableSamplePipeline: false
+  database:
+    disableHealthCheck: false
+    mariaDB:
+      deploy: true
+      pipelineDBName: mlpipeline
+      pvcSize: 10Gi
+      username: mlpipeline
+  dspVersion: v2
+  objectStorage:
+    disableHealthCheck: false
+    enableExternalRoute: false
+    externalStorage:
+      basePath: ""
+      bucket: pipeline-{{ .Values.app.name }}-artifacts
+      host: minio-s3-{{ .Values.app.namespace }}{{ .Values.app.cluster }}
+      port: ""
+      region: us-east-1
+      s3CredentialsSecret:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: aws-connection-pipeline-artifacts
+      scheme: https
+  persistenceAgent:
+    deploy: true
+    numWorkers: 2
+  podToPodTLS: true
+  scheduledWorkflow:
+    cronScheduleTimezone: UTC
+    deploy: true

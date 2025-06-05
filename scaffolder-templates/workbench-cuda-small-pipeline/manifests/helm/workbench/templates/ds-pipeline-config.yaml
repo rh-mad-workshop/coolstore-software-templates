@@ -1,0 +1,12 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: ds-pipeline-config
+  namespace: {{ .Values.app.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+  {{- include "ai.labels" . | nindent 4 }}
+  {{- include "backstage.labels" . | nindent 4 }}
+data:
+  odh_dsp.json: ''
+type: Opaque

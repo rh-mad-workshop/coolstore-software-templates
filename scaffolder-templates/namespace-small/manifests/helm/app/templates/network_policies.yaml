@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: networkpolicy-{{ .Values.app.name }}
+  namespace: {{ .Values.app.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    {{- include "namespace.labels" . | nindent 4 }}
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress: []

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: {{ .Values.app.namespace }}
+    modelmesh-enabled: "true"
+    openshift-pipelines.tekton.dev/namespace-reconcile-version: 1.16.1
+  name: {{ .Values.app.namespace }}
+spec:
+  finalizers:
+  - kubernetes

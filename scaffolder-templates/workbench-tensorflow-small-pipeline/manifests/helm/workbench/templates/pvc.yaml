@@ -1,0 +1,22 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    openshift.io/description: ''
+    openshift.io/display-name: {{ .Values.app.name }}
+    volume.beta.kubernetes.io/storage-provisioner: openshift-storage.rbd.csi.ceph.com
+    volume.kubernetes.io/storage-provisioner: openshift-storage.rbd.csi.ceph.com
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.app.namespace }}
+  labels:
+    opendatahub.io/dashboard: 'true'
+    {{- include "ai.labels" . | nindent 4 }}
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: ocs-storagecluster-ceph-rbd
+  volumeMode: Filesystem
