@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.app.namespace }}-setup
+  labels:
+      {{- include "ai.labels" . | nindent 4 }}
+      {{- include "backstage.labels" . | nindent 4 }}
